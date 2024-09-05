@@ -1,0 +1,26 @@
+.list {
+    width: 60vw;
+    background-color: white;
+    border-radius: 15px;
+    padding: 1vw;
+    min-width: min-content;
+}
+
+@media (max-width: 1000px) {
+    .list {
+        width: 75vw;
+    }
+}
+
+@media (max-width: 500px) {
+    .list {
+        button {
+            padding: 0;
+            height: 28px;
+        }
+
+        label {
+            padding-inline: 0;
+        }
+    }
+}

@@ -1,0 +1,17 @@
+.main {
+    width: 50vw;
+    transition: none;
+    margin: 1vw;
+}
+
+.btn {
+    width: 50vw;
+    min-width: min-content;
+}
+
+@media(max-width: 500px) {
+    .btn {
+        padding: 1px;
+        height: min-content;
+    }
+}

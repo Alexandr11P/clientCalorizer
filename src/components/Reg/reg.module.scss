@@ -1,0 +1,48 @@
+.body {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.main {
+    min-width: max-content;
+    min-height: max-content;
+    width: 30vw;
+    border-radius: 15px;
+    background-color: white;
+    padding: 2%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    input {
+        margin-bottom: 3%;
+    }
+}
+
+@media (max-width: 1000px) {
+    .main {
+        width: 50vw;
+    }
+}
+
+@media (max-width: 500px) {
+    .main {
+        width: 90vw;
+    }
+}
+
+
+
+.btns {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.nameV,
+.passV {
+    font-size: 9px;
+    color: red;
+}

@@ -1,0 +1,23 @@
+.main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin-top: 1vw;
+    align-items: center;
+    border: 1px dashed black;
+    padding: 5px;
+    border-radius: 15px;
+    min-width: min-content;
+    font-size: 14px;
+}
+
+.inp {
+    width: 70px;
+}
+
+.box {
+    justify-self: end;
+
+    * {
+        margin: 1px;
+    }
+}

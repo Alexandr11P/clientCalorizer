@@ -1,0 +1,29 @@
+.exit {
+    position: fixed;
+    right: 1vw;
+    top: 1vw;
+}
+
+.main {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+@media (max-width: 500px) {
+    .main {
+        * {
+            font-size: 11px;
+        }
+
+    }
+}
+
+@media (max-width: 700px) {
+
+    .exit {
+        position: absolute;
+        padding: 2px
+    }
+
+}

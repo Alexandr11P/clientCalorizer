@@ -1,67 +1,48 @@
-import "./App.css"
-import { Counter } from "./features/counter/Counter"
-import { Quotes } from "./features/quotes/Quotes"
-import logo from "./logo.svg"
+import { Suspense, lazy } from "react";
+import Auth from "./components/Auth/Auth"
+import Base from "./components/Base/Base";
+import Modals from "./components/Modals";
+import Reg from "./components/Reg/Reg"
+import { createBrowserRouter, RouterProvider, createRoutesFromElements, Route, redirect } from "react-router-dom";
+import { Spin } from "antd";
+
+const loaderAuth = () => {
+  if (localStorage.getItem('Auth')) { return redirect('/') };
+  return 'Auth'
+}
+
+const loaderNonAuth = () => {
+  if (!localStorage.getItem('Auth')) { return redirect('/auth') };
+  return 'Non auth'
+}
+
+const History = lazy(() => import("./components/History/History"));
+
+const router = createBrowserRouter(
+  createRoutesFromElements(
+    <>
+      <Route loader={loaderNonAuth} path='/' element={<Base />}></Route>
+      <Route loader={loaderAuth} path="/reg" element={<Reg />}></Route>
+      <Route loader={loaderAuth} path="/auth" element={<Auth />}></Route>
+      <Route loader={loaderNonAuth} path="/his" element={
+        <Suspense
+          fallback={
+            <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+              <Spin />
+            </div>}>
+          <History />
+        </Suspense>}>
+      </Route>
+    </>
+
+  ))
 
 const App = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <Quotes />
-        <span>
-          <span>Learn </span>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://redux-toolkit.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Redux Toolkit
-          </a>
-          <span>, </span>
-          <a
-            className="App-link"
-            href="https://react-redux.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            React Redux
-          </a>
-          ,<span> and </span>
-          <a
-            className="App-link"
-            href="https://reselect.js.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Reselect
-          </a>
-        </span>
-      </header>
-    </div>
+    <>
+      <RouterProvider router={router} />
+      <Modals />
+    </>
   )
 }
 

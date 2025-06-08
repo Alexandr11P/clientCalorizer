@@ -10,10 +10,8 @@ import {
 } from 'chart.js';
 
 import { Line } from 'react-chartjs-2';
-import { useAppDispatch, useAppSelector } from '../../store/hooks';
-import { getHistory } from '../../store/slices/historySlice';
-import { useEffect } from 'react';
-import { Button, Flex } from 'antd';
+import { useAppDispatch, useAppSelector } from '@store/hooks';
+import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 Chart.register(
@@ -26,13 +24,11 @@ Chart.register(
     Legend
 );
 
-
-
 export default function History() {
     const dispatch = useAppDispatch();
-    const journal = useAppSelector((s) => s.history.state);
+    const journal = useAppSelector((s) => s.history.history);
     const nav = useNavigate();
-    useEffect(() => { dispatch(getHistory()) }, []);
+
 
 
     const options = {
@@ -100,10 +96,8 @@ export default function History() {
     return (
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Button type="text" className={`${'cls.exit'}`} onClick={() => { nav('/') }}>
+                <Button type="text" onClick={() => { nav('/') }}>
                     На главную</Button>
-                <Button type="text" className={`${'cls.exit'}`} onClick={() => { localStorage.clear(); nav('/auth') }}>
-                    Exit</Button>
             </div>
             <div style={style}><Line options={options} data={data} /></div>
             <div style={style}><Line options={optionsK} data={dataK} /></div>

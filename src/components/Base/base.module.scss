@@ -1,29 +1,22 @@
-.exit {
-    position: fixed;
-    right: 1vw;
-    top: 1vw;
-}
-
 .main {
-    display: flex;
-    align-items: center;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
+  padding-inline: 20vw;
+  gap:5px;
 }
 
-@media (max-width: 500px) {
-    .main {
-        * {
-            font-size: 11px;
-        }
 
-    }
+@media (max-width: 1000px) {
+  .main {
+    padding-inline: 10vw;
+  }
 }
 
-@media (max-width: 700px) {
-
-    .exit {
-        position: absolute;
-        padding: 2px
+@media (max-width: 600px) {
+  .main {
+    padding-inline: 20px;
+    * {
+      font-size: 11px;
     }
-
+  }
 }

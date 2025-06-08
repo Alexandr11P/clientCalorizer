@@ -1,52 +1,30 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit'
-import type { PayloadAction } from '@reduxjs/toolkit'
-import { baseURL, baseHeaders } from '../../baseParam'
+import { getDateNowXXYY } from "@/shared/getDateXXYY";
+import { createSlice } from "@reduxjs/toolkit"
+import type { PayloadAction } from "@reduxjs/toolkit"
+import { createPersistSlice } from "@shared/rtk-persist"
 
-type Journal = { date: string, b: number, zh: number, u: number };
+type Journal = { date: string; b: number; zh: number; u: number }
 
-const initialState: { status: string; state: Journal[] } = { status: '', state: [{ date: '', b: 0, zh: 0, u: 0 }] };
+const initialState: { history: Journal[] } = { history: [{ date: getDateNowXXYY(), b: 0, zh: 0, u: 0 }] }
 
-export const getHistory = createAsyncThunk('/eaten', async (data, { rejectWithValue }) => {
-    try {
-        const auth = localStorage.getItem('Auth')
-        if (typeof auth === 'string') {
-            const res = await fetch(`${baseURL}/eaten`, {
-                method: 'GET',
-                headers: {
-                    'Content-Type': 'application/json', ...JSON.parse(auth), ...baseHeaders
-                }
-            })
-            if (res.ok) { return await res.json() } else { throw res.status }
-        }
-    } catch (err) {
-        return rejectWithValue(`${err}`)
-    }
-})
-
-const historySlice = createSlice({
-    name: 'history',
+const historySlice = createPersistSlice(
+  createSlice({
+    name: "history",
     initialState,
     reducers: {
-        setHistory(state, action: PayloadAction<[Journal]>) {
-            state.state = action.payload
-        },
+      eat(state, { payload }: PayloadAction<Journal>) {
+        const { b, zh, u, date } = payload
+        const dayIndex = state.history.findIndex(e => e.date === date)
+        if (dayIndex < 0) {
+          state.history.push(payload)
+        } else {
+          const prev = state.history[dayIndex]
+          state.history[dayIndex] = { date, b: prev.b + b, zh: prev.zh + zh, u: prev.u + u }
+        }
+      },
     },
-    extraReducers: (builder) => {
+  }),
+)
 
-        builder.addCase(getHistory.fulfilled, (state, action) => { state.status = ''; state.state.splice(0, state.state.length, ...action.payload) })
-
-        builder.addCase(getHistory.pending, (state, action) => { state.status = 'Загрузка' })
-
-        builder.addCase(getHistory.rejected, (state, action) => {
-            state.status = 'Error'
-            console.log(action.payload)
-            if (!['404', '500'].includes(`${action.payload}`)) {
-                localStorage.removeItem('Auth'); window.location.reload()
-            }
-        })
-    },
-
-})
-
-export const { setHistory } = historySlice.actions
+export const { eat } = historySlice.actions
 export default historySlice
